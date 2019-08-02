@@ -5,6 +5,7 @@
 * Vagrant
 * Docker
 * Gradle (oder mit Wrapper arbeiten?)
+* QGIS
 
 ## Inhalt
 1. (Kurze) theoretische Einführung
@@ -14,8 +15,11 @@
 
 ## Brainstorming (to be deleted)
 - Funktionsweise Gradle an paar Beispielen (dependsOn, finalizeBy, defaultTasks)
+- Download 
+- Kopieren, Enzippen
+- SSH (?, wo kann man das zeigen?)
 - Geo in Gradle
-- Gradle mit Jenkins
+- Gradle mit Jenkins (Docker-Jenkins)
   * E-Mail
   * Fileupload
   * Cronjob

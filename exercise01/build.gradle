@@ -1,0 +1,20 @@
+defaultTasks 'foobar'
+
+task foo() {
+    doLast {
+		println "Hallo"
+	}
+}
+
+task bar() {
+    doLast {
+		println "Welt"
+	}
+}
+
+task foobar(dependsOn: ['foo','bar']) {
+
+}
+
+// The dependsOn list does not guarantee ordering.
+//bar.mustRunAfter(foo)
