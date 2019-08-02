@@ -15,8 +15,9 @@
 
 ## Brainstorming (to be deleted)
 - Funktionsweise Gradle an paar Beispielen (dependsOn, finalizeBy, defaultTasks)
+- exec2 mit error und ignorieren.
 - Download 
-- Kopieren, Enzippen
+- Kopieren, Enzippen (öreb daten? auf Problem hinweisen, dass Inhalt immer anders heisst und Lösung zeigen)
 - SSH (?, wo kann man das zeigen?)
 - Geo in Gradle
 - Gradle mit Jenkins (Docker-Jenkins)
