@@ -27,4 +27,6 @@
   * (ala Solothurn, alles ist im Github drin, alles ist Code und automatisierbar)
 - Datenumbau Kantonales Modell -> Bundesmodell (Nutzungsplanung), zuerst Import der Daten im kantonalen Modell, dann Umbau und Export und AI-Upload.
 
+- Links zu Repo und Doku zeigen
+
 
