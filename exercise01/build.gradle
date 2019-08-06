@@ -18,3 +18,18 @@ task foobar(dependsOn: ['foo','bar']) {
 
 // The dependsOn list does not guarantee ordering.
 //bar.mustRunAfter(foo)
+
+
+task uno() {
+	doLast { task ->
+		println "eins"
+		throw new TaskExecutionException(task,
+            new Exception('Fail task on purpose'))
+	}
+}
+
+task dos()  {
+	doLast {
+		println "zwei"
+	}
+}

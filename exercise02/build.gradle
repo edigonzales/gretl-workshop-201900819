@@ -1,0 +1,8 @@
+plugins {
+    id "de.undercouch.download" version "3.4.3"
+}
+
+def pathToTempFolder = System.getProperty("java.io.tmpdir")
+
+def landUsePlansDataSets = ["2405", "2408"]
+def landUsePlansBaseUrl = "https://s3.eu-central-1.amazonaws.com/ch.so.arp.nutzungsplanung/"

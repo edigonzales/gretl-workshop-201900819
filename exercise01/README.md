@@ -21,6 +21,16 @@ Default Task:
 ./gradlew
 ```
 
+Continue with failed tasks:
+```
+./gradlew uno dos
+
+./gradlew --continue uno dos
+```
+
+
+
+
 ## Links
 
 https://trickyandroid.com/gradle-tip-3-tasks-ordering/
