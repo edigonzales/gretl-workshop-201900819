@@ -26,4 +26,6 @@
 - Datenumbau Kantonales Modell -> Bundesmodell (Nutzungsplanung), zuerst Import der Daten im kantonalen Modell, dann Umbau und Export und AI-Upload.
 - Docker starten etc.?
 
+- Links zu Repo und Doku zeigen
+
 
