@@ -14,9 +14,8 @@ pipeline {
                 script { currentBuild.description = "${params.buildDescription}" }
                 git url: 'https://github.com/edigonzales/gretl-workshop-201900819'
                 dir("exercise06") {
-                    //sh "./gradlew importNutzungsplanungToStage"
-                    sh "./gradlew downloadNutzungsplanung"
-                    //archiveArtifacts artifacts: '*.xtf'
+                    sh "./gradlew importNutzungsplanungToStage"
+                    //sh "./gradlew downloadNutzungsplanung"
                 }
                 //echo "Send E-Mails (containing link to ${BUILD_URL}input/)"
             }
@@ -34,8 +33,7 @@ pipeline {
                     archiveArtifacts artifacts: '*.xtf'
                 }
             }
-        }
-       
+        }  
     }
     post {
         always {
