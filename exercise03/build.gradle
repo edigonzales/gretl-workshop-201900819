@@ -113,7 +113,6 @@ task zipNplch(type: Zip){
     destinationDir(file("."))
 }
 
-
 /*
 task uploadNplch(dependsOn: 'zipNplch') {
     description = "Lädt die Nutzungsplanungsdaten (MGDM vom Bund) in die Aggregationsinfrastruktur hoch."
