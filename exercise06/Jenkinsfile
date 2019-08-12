@@ -12,7 +12,7 @@ pipeline {
         stage('Import into staging schema') {
             steps {
                 script { currentBuild.description = "${params.buildDescription}" }
-                git url: 'https://github.com/schmandr/oereb-gretljobs.git'
+                git url: 'https://github.com/edigonzales/gretl-workshop-201900819'
                 sh 'pwd && ls -la'
                 echo 'Executing gradle importStaging (transform data, export data, import data)'
                 sh 'touch a.xtf && touch b.xtf'
