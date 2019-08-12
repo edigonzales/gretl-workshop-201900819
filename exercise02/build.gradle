@@ -1,8 +1,49 @@
 plugins {
-    id "de.undercouch.download" version "3.4.3"
+    id "de.undercouch.download" version "4.0.0"
+}
+// siehe plugins.gradle.org
+// Für fast alles ein Plugin (SSH (SFTP), S3, ...)
+
+import de.undercouch.gradle.tasks.download.Download
+import java.nio.file.Paths
+
+task downloadSomeOerebData(type: Download) {
+    description = "Download ÖREB-Daten"
+    src "https://data.geo.admin.ch/ch.bazl.projektierungszonen-flughafenanlagen.oereb/data.zip"
+    dest System.getProperty("java.io.tmpdir")
+    overwrite true
+    
+    doLast {
+        println "File downloaded to: " + System.getProperty("java.io.tmpdir")
+    }        
 }
 
-def pathToTempFolder = System.getProperty("java.io.tmpdir")
+task unzipSomeOerebData(type: Copy) {
+    description = "Unzip ÖREB-Daten"
+    from zipTree(Paths.get(System.getProperty("java.io.tmpdir"), "data.zip"))
+    into file(Paths.get(System.getProperty("java.io.tmpdir"), "unzip_data"))
+    include "**/*.xtf"
 
-def landUsePlansDataSets = ["2405", "2408"]
-def landUsePlansBaseUrl = "https://s3.eu-central-1.amazonaws.com/ch.so.arp.nutzungsplanung/"
+    doLast {
+        println "File unzipped to directory: " + Paths.get(System.getProperty("java.io.tmpdir"), "unzip_data")
+    }    
+}
+
+task unzipAndRenameSomeOerebData(type: Copy) {
+    description = "Unzip and rename ÖREB-Daten"
+    from zipTree(Paths.get(System.getProperty("java.io.tmpdir"), "data.zip"))
+    into file(Paths.get(System.getProperty("java.io.tmpdir"), "unzip_data"))
+    include "**/*.xtf"
+
+    // This is to get rid of the date appendix.
+    rename { String fileName ->
+        if (fileName.contains("ch.bazl.projektierungszonen-flughafenanlagen.oereb")) {
+            return "ch.bazl.projektierungszonen-flughafenanlagen.oereb.xtf"
+        }
+        return fileName
+    } 
+
+    doLast {
+        println "File unzipped to directory: " + Paths.get(System.getProperty("java.io.tmpdir"), "unzip_data")
+    }    
+}

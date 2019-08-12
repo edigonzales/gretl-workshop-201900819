@@ -26,6 +26,10 @@
 - Datenumbau Kantonales Modell -> Bundesmodell (Nutzungsplanung), zuerst Import der Daten im kantonalen Modell, dann Umbau und Export und AI-Upload.
 - Docker starten etc.?
 
+- CSV Validieren (in Jenkins als Beispiel)
+
+
 - Links zu Repo und Doku zeigen
 
 
+- "Der GRETL-Job agi_check_ili_export (#367) war leider nicht erfolgreich. Details dazu finden Sie in den Log-Meldungen unter https://gretl.so.ch/job/agi_check_ili_export/367/." -> zeigen im Logfile -> Fehler klar.

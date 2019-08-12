@@ -1,0 +1,128 @@
+buildscript {
+    repositories {
+        maven { url "http://download.osgeo.org/webdav/geotools/" }
+        jcenter()
+        mavenCentral()
+        maven { url "http://jars.interlis.ch" }
+    } 
+}
+
+plugins {
+    id "de.undercouch.download" version "4.0.0"
+    id "ch.so.agi.gretl" version "2.0.123"    
+}
+
+import java.nio.file.Paths
+import de.undercouch.gradle.tasks.download.Download
+import ch.so.agi.gretl.tasks.*
+
+
+def pathToTempFolder = System.getProperty("java.io.tmpdir")
+
+def landUsePlansDataSets = ["2405", "2408"]
+def landUsePlansBaseUrl = "https://s3.eu-central-1.amazonaws.com/ch.so.arp.nutzungsplanung/"
+
+def iliModelKanton = "SO_Nutzungsplanung_20171118"
+def dbSchemaKanton = "arp_npl"
+
+def iliModelHauptnutzung = "Nutzungsplanung_Hauptnutzung_V1_1"
+def iliModelBund = "Nutzungsplanung_LV95_V1_1"
+def dbSchemaBund = "arp_npl_ch"
+
+
+def dbUriEdit = "jdbc:postgresql://192.168.50.8:5432/edit"
+def dbUserEdit = "ddluser"
+def dbPwdEdit = "ddluser"
+
+
+landUsePlansDataSets.each { landUsePlansDataSet ->
+    def dataSet = landUsePlansDataSet.toString()
+    task "downloadLandUsePlansData_$dataSet"(type: Download) {
+        src landUsePlansBaseUrl + dataSet + ".xtf"
+        dest pathToTempFolder
+        overwrite true
+
+        doLast {
+            println "File downloaded to: " + pathToTempFolder
+        }        
+    }
+
+    task "replaceLandUsePlansData_$dataSet"(type: Ili2pgReplace, dependsOn: "downloadLandUsePlansData_$dataSet") {
+        database = [dbUriEdit, dbUserEdit, dbPwdEdit]
+        models = iliModelKanton
+        dbschema = dbSchemaKanton
+        dataFile = file(Paths.get(pathToTempFolder.toString(), dataSet + ".xtf"))
+        dataset = dataSet
+        disableValidation = true
+    }
+}
+
+task replaceLandUsePlansData() {
+    description = "Aggregationstask."
+    doLast {
+        println "All dynamic tasks were performed."
+    }
+}
+
+replaceLandUsePlansData.dependsOn {
+    //tasks.findAll { task -> task.name.startsWith('downloadLandUsePlansData_') }
+    tasks.findAll { task -> task.name.startsWith('replaceLandUsePlansData_') }
+}
+
+/* ------------------------------------------------------------------------------------ */
+
+task importHauptnutzung(type: Ili2pgImport) {
+    database = [dbUriEdit, dbUserEdit, dbPwdEdit]
+    models = iliModelBund
+    dbschema = dbSchemaBund
+    dataFile = "Hauptnutzung_CH_V1_1.xml"
+    disableValidation = true
+}
+
+task transferNplso2Nplch (type: SqlExecutor) {
+    description = "Baut die Nutzungsplanungsdaten des Kanton Solothurn in das MGDM des Bundes um. Löscht vorgängig vorhanden Daten im Bundesschema."
+    database = [dbUriEdit, dbUserEdit, dbPwdEdit]
+    sqlFiles = [
+            'truncate_all_arp_npl_mgdm_tables.sql',
+            'arp_nutzungsplanung_mgdm.sql'
+    ]
+}
+
+task exportNplch(type: Ili2pgExport) {
+    description = "Exportiert die ins Nutzungsplanungs-MGDM umgebauten Daten in eine XTF-Datei."
+    database = [dbUriEdit, dbUserEdit, dbPwdEdit]
+    dbschema = dbSchemaBund
+    models = iliModelBund
+    dataFile = "npl_ch.xtf"
+    disableValidation = true
+}
+
+task validateNplch(type: IliValidator) {
+    description = "Validiert die XTF-Datei mit ilivalidator."
+    dataFiles = ["npl_ch.xtf"]
+    logFile = "ilivalidator.log"
+    configFile = "config.toml"
+}
+
+task zipNplch(type: Zip){
+    description = "Zippt die XTF-Datei mit den Nutzungsplanungsdaten (MGDM vom Bund) für den Upload in die Aggregationsinfrastruktur."
+    from "." // mehrere froms sind möglich
+    include "config.toml"
+    include "npl_ch.xtf"
+    archiveName "LV95.zip"
+    destinationDir(file("."))
+}
+
+
+/*
+task uploadNplch(dependsOn: 'zipNplch') {
+    description = "Lädt die Nutzungsplanungsdaten (MGDM vom Bund) in die Aggregationsinfrastruktur hoch."
+    doLast {
+        def response = ["curl", "-u", aiLogin, "-F", "topic=npl_nutzungsplanung", "-F",
+                        "lv95_file=@LV95.zip", "-F", "publish=true",
+                        "https://" + aiServer + "/data_agg/interlis/import"].execute().text
+        println(response)
+    }
+    finalizedBy 'removeNplchFiles'
+}
+*/
