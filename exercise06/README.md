@@ -32,4 +32,6 @@ In Jenkins neuer Job anlegen:
 * Repository Url: https://github.com/edigonzales/gretl-workshop-201900819
 * Script Path: exercise06/Jenkinsfile
 
+**ACHTUNG**: dbUrl an für MacOS sehr speziell. Auf Linux mit "localhost" probieren.
+
 In Blue Ocean zeigen.
