@@ -14,13 +14,9 @@ pipeline {
                 script { currentBuild.description = "${params.buildDescription}" }
                 git url: 'https://github.com/edigonzales/gretl-workshop-201900819'
                 dir("exercise06") {
-                    sh "./gradlew downloadNutzungsplanung"
+                    sh "./gradlew importNutzungsplanungToStage"
                     archiveArtifacts artifacts: '*.xtf'
                 }
-                //sh 'pwd && ls -la'
-                //echo 'Executing gradle importStaging (transform data, export data, import data)'
-                //sh 'touch a.xtf && touch b.xtf'
-                //archiveArtifacts artifacts: '*.xtf'
                 //echo "Send E-Mails (containing link to ${BUILD_URL}input/)"
             }
         }
