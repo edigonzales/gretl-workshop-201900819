@@ -19,7 +19,7 @@ import ch.so.agi.gretl.tasks.*
 
 def pathToTempFolder = System.getProperty("java.io.tmpdir")
 
-def dbUriOereb = "jdbc:postgresql://localhost:54321/oereb"
+def dbUriOereb = "jdbc:postgresql://host.docker.internal:5432/oereb"
 def dbUserOereb = "admin"
 def dbPwdOereb = "admin"
 

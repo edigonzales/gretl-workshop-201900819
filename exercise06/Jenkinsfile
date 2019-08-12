@@ -28,10 +28,10 @@ pipeline {
         stage('Import into live schema') {
             steps {
                 git url: 'https://github.com/schmandr/oereb-gretljobs.git'
-                // Following command needs authentication, so use rather Copy Artifact plugin
-                //sh 'curl --insecure -L -O ${BUILD_URL}artifact/*zip*/archive.zip'
-                sh 'pwd && ls -la'
-                echo 'Executing gradle importLive (import data, uploda data)'
+                dir("exercise06") {
+                    sh "./gradlew importNutzungsplanungToLive"
+                    archiveArtifacts artifacts: '*.xtf'
+                }
             }
         }
        
