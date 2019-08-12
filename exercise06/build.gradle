@@ -18,7 +18,6 @@ import ch.so.agi.gretl.tasks.*
 
 
 def pathToTempFolder = System.getProperty("java.io.tmpdir")
-System.env.BUILD_NUMBER
 
 def dbUriOereb = System.env.BUILD_NUMBER ? "jdbc:postgresql://host.docker.internal:54321/oereb" : "jdbc:postgresql://localhost:54321/oereb" 
 //def dbUriOereb = "jdbc:postgresql://host.docker.internal:54321/oereb"
@@ -89,7 +88,6 @@ task importNutzungsplanungToStage(type: Ili2pgReplace, dependsOn: downloadNutzun
     dataset = "ch.so.arp.nutzungsplanung"
     disableValidation = true   
 }
-
 
 task importNutzungsplanungToLive(type: Ili2pgReplace, dependsOn: downloadNutzungsplanung) {
     database = [dbUriOereb, dbUserOereb, dbPwdOereb]
