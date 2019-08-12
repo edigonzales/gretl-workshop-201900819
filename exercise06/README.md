@@ -24,3 +24,11 @@ Damit überhaupt importiert werden kann, müssen die Bundesgesetz und die kanton
 ```
 Diese Daten müssen natürlich nur einmal (zu Beginn) oder bei einer Änderung importiert werden.
 
+In Jenkins neuer Job anlegen:
+
+* "oereb_npl_deployment" als Pipeline
+* Pipeline - Pipeline script from SCM
+* SCM - Git
+* Repository Url: https://github.com/edigonzales/gretl-workshop-201900819
+* Script Path: exercise06/Jenkinsfile
+

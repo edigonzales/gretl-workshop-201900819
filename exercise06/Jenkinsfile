@@ -10,7 +10,6 @@ pipeline {
     }
     stages {
         stage('Import into staging schema') {
-            agent { label 'gretl' }
             steps {
                 script { currentBuild.description = "${params.buildDescription}" }
                 git url: 'https://github.com/schmandr/oereb-gretljobs.git'
@@ -22,13 +21,11 @@ pipeline {
             }
         }
         stage('Validation') {
-            agent { label 'master' }
             steps {
                 input message: 'Sollen die Daten publiziert werden?'
             }
         }
         stage('Import into live schema') {
-            agent { label 'gretl' }
             steps {
                 git url: 'https://github.com/schmandr/oereb-gretljobs.git'
                 // Following command needs authentication, so use rather Copy Artifact plugin
