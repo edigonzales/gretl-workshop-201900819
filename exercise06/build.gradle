@@ -1,0 +1,97 @@
+buildscript {
+    repositories {
+        maven { url "http://download.osgeo.org/webdav/geotools/" }
+        jcenter()
+        mavenCentral()
+        maven { url "http://jars.interlis.ch" }
+    } 
+}
+
+plugins {
+    id "de.undercouch.download" version "4.0.0"
+    id "ch.so.agi.gretl" version "2.0.123"    
+}
+
+import java.nio.file.Paths
+import de.undercouch.gradle.tasks.download.Download
+import ch.so.agi.gretl.tasks.*
+
+
+def pathToTempFolder = System.getProperty("java.io.tmpdir")
+
+def dbUriOereb = "jdbc:postgresql://localhost:54321/oereb"
+def dbUserOereb = "admin"
+def dbPwdOereb = "admin"
+
+task downloadBundesgesetze(type: Download) {
+    src "http://models.geo.admin.ch/V_D/OeREB/OeREBKRM_V1_1_Gesetze_20180501.xml"
+    dest pathToTempFolder
+    overwrite true  
+}
+    
+task importBundesgesetzeToStage(type: Ili2pgReplace, dependsOn: downloadBundesgesetze) {
+    database = [dbUriOereb, dbUserOereb, dbPwdOereb]
+    dbschema = "stage"
+    models = "OeREBKRMvs_V1_1"
+    dataFile = file(Paths.get(pathToTempFolder.toString(), "OeREBKRM_V1_1_Gesetze_20180501.xml"))
+    dataset = "ch.admin.bk.gesetze"
+    disableValidation = true
+}
+
+task importBundesgesetzeToLive(type: Ili2pgReplace, dependsOn: downloadBundesgesetze) {
+    database = [dbUriOereb, dbUserOereb, dbPwdOereb]
+    dbschema = "live"
+    models = "OeREBKRMvs_V1_1"
+    dataFile = file(Paths.get(pathToTempFolder.toString(), "OeREBKRM_V1_1_Gesetze_20180501.xml"))
+    dataset = "ch.admin.bk.gesetze"
+    disableValidation = true
+}
+
+task downloadKantonaleGesetze(type: Download) {
+    src "https://geo.so.ch/geodata/ch.so.sk.gesetze.oereb/ch.so.sk.gesetze.xtf"
+    dest pathToTempFolder
+    overwrite true  
+}
+    
+task importKantonaleGesetzeToStage(type: Ili2pgReplace, dependsOn: downloadKantonaleGesetze) {
+    database = [dbUriOereb, dbUserOereb, dbPwdOereb]
+    dbschema = "stage"
+    models = "OeREBKRMvs_V1_1"
+    dataFile = file(Paths.get(pathToTempFolder.toString(), "ch.so.sk.gesetze.xtf"))
+    dataset = "ch.so.sk.gesetze"
+    disableValidation = true   
+}
+
+task importKantonaleGesetzeToLive(type: Ili2pgReplace, dependsOn: downloadKantonaleGesetze) {
+    database = [dbUriOereb, dbUserOereb, dbPwdOereb]
+    dbschema = "live"
+    models = "OeREBKRMvs_V1_1"
+    dataFile = file(Paths.get(pathToTempFolder.toString(), "ch.so.sk.gesetze.xtf"))
+    dataset = "ch.so.sk.gesetze"
+    disableValidation = true   
+}
+
+task downloadNutzungsplanung(type: Download) {
+    src "https://s3.eu-central-1.amazonaws.com/ch.so.arp.nutzungsplanung.oereb-dev/ch.so.arp.nutzungsplanung.oereb.xtf"
+    dest pathToTempFolder
+    overwrite true  
+}
+
+task importNutzungsplanungToStage(type: Ili2pgReplace, dependsOn: downloadNutzungsplanung) {
+    database = [dbUriOereb, dbUserOereb, dbPwdOereb]
+    dbschema = "stage"
+    models = "OeREBKRMtrsfr_V1_1"
+    dataFile = file(Paths.get(pathToTempFolder.toString(), "ch.so.arp.nutzungsplanung.oereb.xtf"))
+    dataset = "ch.so.arp.nutzungsplanung"
+    disableValidation = true   
+}
+
+
+task importNutzungsplanungToLive(type: Ili2pgReplace, dependsOn: downloadNutzungsplanung) {
+    database = [dbUriOereb, dbUserOereb, dbPwdOereb]
+    dbschema = "live"
+    models = "OeREBKRMtrsfr_V1_1"
+    dataFile = file(Paths.get(pathToTempFolder.toString(), "ch.so.arp.nutzungsplanung.oereb.xtf"))
+    dataset = "ch.so.arp.nutzungsplanung"
+    disableValidation = true   
+}

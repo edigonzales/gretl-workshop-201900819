@@ -31,3 +31,4 @@
   * Seeder Job
   * Failed Jobs: https://gretl.so.ch/job/agi_check_ili_export/367
   * Slaves...
+  * ENV-Variablen are your friend.
