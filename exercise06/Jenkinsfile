@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent any
     parameters {
         string(name: 'buildDescription', description: 'Bitte geben Sie den Grund für die Publikation der Daten ein')
     }
