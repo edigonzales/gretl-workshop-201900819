@@ -15,7 +15,7 @@ pipeline {
                 git url: 'https://github.com/edigonzales/gretl-workshop-201900819'
                 dir("exercise06") {
                     sh "./gradlew downloadNutzungsplanung"
-                    archiveArtifacts artifacts: '*.xtf'
+                    archiveArtifacts artifacts: "**/*.xtf"
                 }
                 //sh 'pwd && ls -la'
                 //echo 'Executing gradle importStaging (transform data, export data, import data)'
