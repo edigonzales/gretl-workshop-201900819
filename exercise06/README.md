@@ -19,3 +19,8 @@ Es gibt ein identisches `stage`- und  `live`-Schema. Der Gretl-Job importiert di
 
 Damit überhaupt importiert werden kann, müssen die Bundesgesetz und die kantonalen Gesetze importiert werden.
 
+```
+./gradlew importBundesgesetzeToStage importBundesgesetzeToLive importKantonaleGesetzeToStage importKantonaleGesetzeToLive
+```
+Diese Daten müssen natürlich nur einmal (zu Beginn) oder bei einer Änderung importiert werden.
+
