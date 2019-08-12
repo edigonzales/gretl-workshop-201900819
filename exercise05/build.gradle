@@ -28,3 +28,11 @@ task validateCsvFail(type: CsvValidator) {
     models = "CsvModel"
     firstLineIsHeader = false    
 }
+
+task validateCsv(type: CsvValidator) {
+    description = "Validiert eine hochgeladene CSV-Datei mit ilivalidator."
+    dataFiles = ["data.csv"]
+    models = "CsvModel"
+    firstLineIsHeader = false    
+}
+
