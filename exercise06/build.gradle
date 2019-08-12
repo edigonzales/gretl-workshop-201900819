@@ -19,9 +19,19 @@ import ch.so.agi.gretl.tasks.*
 
 def pathToTempFolder = System.getProperty("java.io.tmpdir")
 
+//def dbUriOereb = System.getenv('dbUriOereb') ?: "jdbc:postgresql://localhost:54321/oereb" 
+
+
 def dbUriOereb = "jdbc:postgresql://host.docker.internal:54321/oereb"
 def dbUserOereb = "admin"
 def dbPwdOereb = "admin"
+
+task fubar() {
+    doLast {
+        println System.properties['os.name']
+    }
+}
+
 
 task downloadBundesgesetze(type: Download) {
     src "http://models.geo.admin.ch/V_D/OeREB/OeREBKRM_V1_1_Gesetze_20180501.xml"
