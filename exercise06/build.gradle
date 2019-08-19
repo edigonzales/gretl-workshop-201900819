@@ -84,7 +84,7 @@ task importNutzungsplanungToStage(type: Ili2pgReplace, dependsOn: downloadNutzun
     database = [dbUriOereb, dbUserOereb, dbPwdOereb]
     dbschema = "stage"
     models = "OeREBKRMtrsfr_V1_1"
-    dataFile = file(Paths.get(pathToTempFolder.toString(), "ch.so.arp.nutzungsplanung.oereb.xtf"))
+    dataFile = file(Paths.get(pathToTempFolder.toString(), "ch.so.arp.nutzungsplanung.oereb_workshop.xtf"))
     dataset = "ch.so.arp.nutzungsplanung"
     disableValidation = true   
 }

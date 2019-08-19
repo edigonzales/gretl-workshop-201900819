@@ -2,7 +2,7 @@
 
 ## Requirements
 * Java 1.8+
-* Vagrant
+* Vagrant + Virtualbox
 * Docker
 * Gradle (oder mit Wrapper arbeiten?)
 * QGIS
